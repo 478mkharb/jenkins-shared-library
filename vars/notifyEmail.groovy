@@ -3,6 +3,7 @@ def call(String status = 'SUCCESS') {
     def subjectPrefix = status == 'SUCCESS' ? '✅ SUCCESS' : '❌ FAILURE'
 
     emailext(
+        to: '478mkharb@gmail.com',
         subject: "${subjectPrefix}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
         body: """
         <h3>Build ${status}</h3>
