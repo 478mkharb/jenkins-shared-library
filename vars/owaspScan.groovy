@@ -1,15 +1,23 @@
-def call() {
-    stage('OWASP Dependency Check') {
-        withCredentials([string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')]) {
-            sh '''
-            echo "===== OWASP DEPENDENCY CHECK ====="
+def call(Map config = [:]) {
 
-            mvn org.owasp:dependency-check-maven:check \
-              -Dnvd.api.key=$NVD_API_KEY \
-              -Dformat=ALL \
-              -DfailBuildOnCVSS=7
+    if (!config.nvdApiKey) {
+        error "OWASP Dependency Check: nvdApiKey is mandatory"
+    }
 
-            '''
-        }
+    def projectName = config.get('project', 'app')
+    def failScore   = config.get('failOnCVSS', 7)
+    def scanDir     = config.get('scanDir', '.')
+    def outDir      = config.get('outDir', 'dependency-check-report')
+
+    withEnv(["NVD_API_KEY=${config.nvdApiKey}"]) {
+        sh """
+        dependency-check.sh \
+          --project ${projectName} \
+          --scan ${scanDir} \
+          --format XML \
+          --out ${outDir} \
+          --nvdApiKey \$NVD_API_KEY \
+          --failOnCVSS ${failScore}
+        """
     }
 }
