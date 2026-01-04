@@ -1,7 +1,7 @@
-// vars/notifyEmail.groovy
+
 def call(String status) {
 
-    // Set prefix and attach log for non-success builds
+    
     def subjectPrefix = status == 'SUCCESS' ? 'SUCCESS' : (status == 'UNSTABLE' ? 'UNSTABLE' : 'FAILURE')
     def attachLog = status != 'SUCCESS'
 
