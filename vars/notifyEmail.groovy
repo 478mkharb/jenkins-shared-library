@@ -2,7 +2,7 @@
 def call(String status) {
 
     // Set prefix and attach log for non-success builds
-    def subjectPrefix = status == 'SUCCESS' ? '✅ SUCCESS' : (status == 'UNSTABLE' ? '⚠️ UNSTABLE' : '❌ FAILURE')
+    def subjectPrefix = status == 'SUCCESS' ? 'SUCCESS' : (status == 'UNSTABLE' ? 'UNSTABLE' : 'FAILURE')
     def attachLog = status != 'SUCCESS'
 
     emailext(
@@ -16,6 +16,6 @@ def call(String status) {
         """,
         mimeType: 'text/html',
         attachLog: attachLog,
-        to: '478mkharb@gmail.com'  // set your recipient(s) here
+        to: '478mkharb@gmail.com' 
     )
 }
