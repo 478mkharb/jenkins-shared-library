@@ -8,16 +8,11 @@ def call(String agentLabel, Closure body) {
     echo "Current Hour (IST): ${hour}"
 
     if (hour >= 9 && hour < 18) {
-        echo "Business hours → Running on agent: ${agentLabel}"
-
         node(agentLabel) {
             body()
         }
-
     } else {
-        echo "Off hours → Running on controller"
-
-        node('master') {
+        node('built-in') {
             body()
         }
     }
